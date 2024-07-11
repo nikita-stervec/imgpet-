@@ -1,0 +1,20 @@
+.card__wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.card__wrapper img {
+  border-radius: 5%;
+}
+
+.card__like {
+  display: flex;
+  justify-content: start;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.card__like:hover {
+  background-color: red;
+  transition: 0.1s;
+}

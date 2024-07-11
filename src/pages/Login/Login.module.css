@@ -1,0 +1,35 @@
+.login__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5rem 40%;
+}
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login__form input {
+  padding: 8px;
+}
+
+.login__btn {
+  padding: 8px;
+  background-color: none;
+  border: none;
+}
+
+.login__span {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+  text-decoration: none;
+}
+
+.login__link {
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+}
