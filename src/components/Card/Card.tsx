@@ -19,7 +19,7 @@ export const Card = forwardRef<HTMLDivElement, ICard>(({ desc, url }, ref) => {
       />
       <Button>
         <img
-          onClick={() => alert("123")}
+          onClick={() => alert(`you liked photo w/ src ${url}`)}
           className={styles["card__like"]}
           src='/like-right-svgrepo-com.svg'
           alt='like'
