@@ -18,7 +18,7 @@ export const Header = () => {
           Home
         </Link>
         <Link to={"/liked"}>
-          <Button>liked pics</Button>
+          <Button className={styles["header__liked__auth"]}>liked pics</Button>
         </Link>
         <div className={styles["header__auth"]}>
           <img src='/avatar.jpg' alt='avatar' width={30} height={30} />
@@ -40,7 +40,7 @@ export const Header = () => {
           Home
         </Link>
         <Link to={"/liked"}>
-          <Button>liked pics</Button>
+          <Button className={styles["header__liked"]}> liked pics</Button>
         </Link>
         <div className={styles["header__auth"]}>
           <Link to={"/login"}>

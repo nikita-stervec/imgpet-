@@ -4,14 +4,25 @@
 }
 
 .card__wrapper img {
-  border-radius: 5%;
+  border-top-right-radius: 10%;
+  border-top-left-radius: 10%;
+}
+
+.card__bottom {
+  background-color: gainsboro;
 }
 
 .card__like {
+  background-color: gainsboro;
   display: flex;
-  justify-content: start;
+  margin: 3px 0 3px 12px;
   transition: 0.5s;
   cursor: pointer;
+}
+
+.card__button {
+  background-color: gainsboro;
+  border: none;
 }
 
 .card__like:hover {

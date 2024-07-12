@@ -28,6 +28,26 @@
   font-weight: 600;
 }
 
+.header__liked {
+  padding: 0 0 0 50px;
+  border: none;
+  background-color: #ffffff;
+  color: black;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: larger;
+}
+
+.header__liked__auth {
+  padding: 0 0 0 115px;
+  border: none;
+  background-color: #ffffff;
+  color: black;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: larger;
+}
+
 .header__auth {
   display: flex;
 

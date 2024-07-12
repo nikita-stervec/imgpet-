@@ -1,0 +1,13 @@
+.liked__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 0 3rem 0;
+  gap: 1rem;
+}
+
+.liked__welcome {
+  font-weight: 600;
+  font-size: larger;
+}
