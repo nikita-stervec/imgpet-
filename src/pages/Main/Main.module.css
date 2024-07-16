@@ -28,3 +28,8 @@
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 2vw;
 }
+
+.main__loading {
+  display: flex;
+  flex-direction: column;
+}

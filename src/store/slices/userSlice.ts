@@ -4,45 +4,72 @@ interface UserState {
   email: string | null;
   token: string | null;
   id: string | null;
-  likedUrls: string[];
+  likedPic: { id: string; url: string }[];
 }
 
-const initialState: UserState = {
+const loadState = () => {
+  try {
+    const serializedState = sessionStorage.getItem("authState");
+    if (serializedState === null) {
+      return undefined;
+    }
+    return JSON.parse(serializedState);
+  } catch (err) {
+    return undefined;
+  }
+};
+
+const saveState = (state: UserState) => {
+  try {
+    const serializedState = JSON.stringify(state);
+    sessionStorage.setItem("authState", serializedState);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const initialState: UserState = loadState() || {
   email: null,
   token: null,
   id: null,
-  likedUrls: [],
+  likedPic: [],
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser(state, action) {
+    setUser(
+      state,
+      action: PayloadAction<{ email: string; token: string; id: string }>
+    ) {
       state.email = action.payload.email;
       state.token = action.payload.token;
       state.id = action.payload.id;
+      saveState(state);
     },
     removeUser(state) {
       state.email = null;
       state.token = null;
       state.id = null;
-      state.likedUrls = [];
+      state.likedPic = [];
+      saveState(state);
     },
-    likePhoto(state, action: PayloadAction<{ url: string }>) {
-      if (!state.likedUrls.includes(action.payload.url)) {
-        state.likedUrls.push(action.payload.url);
+    getUser(state) {
+      state.email;
+      state.token;
+      state.id;
+    },
+    likePhoto(state, action: PayloadAction<{ url: string; id: string }>) {
+      const { id, url } = action.payload;
+      if (!state.likedPic.some(photo => photo.id === id && photo.url === url)) {
+        state.likedPic.push({ id, url });
+        saveState(state);
       }
-    },
-    dislikePhoto(state, action: PayloadAction<{ url: string }>) {
-      state.likedUrls = state.likedUrls.filter(
-        url => url !== action.payload.url
-      );
     },
   },
 });
 
-export const { setUser, removeUser, likePhoto, dislikePhoto } =
-  userSlice.actions;
+export const { setUser, removeUser, getUser, likePhoto } = userSlice.actions;
 
 export default userSlice.reducer;

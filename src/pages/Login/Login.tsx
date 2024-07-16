@@ -23,7 +23,7 @@ export const Login = () => {
         );
         navigate("/");
       })
-      .catch(() => alert("invalid user"));
+      .catch(() => alert("Wrong Email or Password"));
   };
 
   return (
