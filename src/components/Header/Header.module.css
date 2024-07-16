@@ -16,7 +16,7 @@
 .header__bar {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -50,7 +50,7 @@
 
 .header__auth {
   display: flex;
-
+  font-weight: 600;
   gap: 1rem;
 }
 
@@ -61,4 +61,11 @@
 
 .header__auth img {
   border-radius: 50%;
+}
+
+.header__profile {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  text-decoration: none;
 }

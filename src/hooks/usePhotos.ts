@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 
 type Photo = {
+  blur_hash: string;
   urls: {
     regular: string;
   };
   id: string;
   alt_description: string;
+  tags: {
+    title: string;
+  }[];
 };
 
 export const usePhotos = (query: string, page: number) => {
@@ -41,14 +45,11 @@ export const usePhotos = (query: string, page: number) => {
           }
         );
 
-        console.log(response.data);
+        const newPhotos = response.data.results.filter(
+          (photo: Photo) => !photos.some(p => p.id === photo.id)
+        );
 
-        setPhotos(prevPhotos => {
-          const newPhotos = response.data.results.filter(
-            (photo: Photo) => !prevPhotos.some(p => p.id === photo.id)
-          );
-          return [...prevPhotos, ...newPhotos];
-        });
+        setPhotos(prevPhotos => [...prevPhotos, ...newPhotos]);
         setHasMore(response.data.results.length > 0);
         setLoading(false);
       } catch (err) {
