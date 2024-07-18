@@ -60,6 +60,5 @@ export const usePhotos = (query: string, page: number) => {
 
     fetchPhotos();
   }, [query, page]);
-
   return { photos, loading, error, hasMore };
 };

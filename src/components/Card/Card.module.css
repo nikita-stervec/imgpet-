@@ -10,6 +10,8 @@
 
 .card__bottom {
   background-color: gainsboro;
+  border-bottom-left-radius: 10%;
+  border-bottom-right-radius: 10%;
 }
 
 .card__like {

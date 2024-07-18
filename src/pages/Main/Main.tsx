@@ -28,7 +28,6 @@ export const Main = () => {
 
   const lastPhotoElementRef = useCallback(
     (node: HTMLDivElement | null) => {
-      console.log("rrrrr");
       if (loading) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver(entries => {
@@ -48,6 +47,7 @@ export const Main = () => {
   if (error) {
     return <div>Error: {error}</div>;
   }
+
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
   };
@@ -69,21 +69,28 @@ export const Main = () => {
         <div className={styles["main__content"]}>
           {photos.length > 0 ? (
             photos.map((photo, index) => {
+              const uniqueKey = `${photo.id}-${index}`;
               if (photos.length === index + 1) {
                 return (
                   <Card
+                    blur_hash={photo.blur_hash}
+                    tags={photo.tags.map(tag => tag.title)}
+                    id={photo.id}
                     url={photo.urls.regular}
                     desc={photo.alt_description}
-                    key={photo.id}
+                    key={uniqueKey}
                     ref={lastPhotoElementRef}
                   />
                 );
               } else {
                 return (
                   <Card
+                    blur_hash={photo.blur_hash}
+                    tags={photo.tags.map(tag => tag.title)}
+                    id={photo.id}
                     url={photo.urls.regular}
                     desc={photo.alt_description}
-                    key={photo.id}
+                    key={uniqueKey}
                   />
                 );
               }
@@ -92,7 +99,9 @@ export const Main = () => {
             <div>No photos to display</div>
           )}
         </div>
-        {loading && page > 1 && <div>Loading more...</div>}
+        {loading && page > 1 && (
+          <h1 className={styles["main__loading"]}>Loading more...</h1>
+        )}
       </div>
     </div>
   ) : (
@@ -112,21 +121,28 @@ export const Main = () => {
         <div className={styles["main__content"]}>
           {photos.length > 0 ? (
             photos.map((photo, index) => {
+              const uniqueKey = `${photo.id}-${index}`;
               if (photos.length === index + 1) {
                 return (
                   <Card
+                    blur_hash={photo.blur_hash}
+                    tags={photo.tags.map(tag => tag.title)}
+                    id={photo.id}
                     url={photo.urls.regular}
                     desc={photo.alt_description}
-                    key={photo.id}
+                    key={uniqueKey}
                     ref={lastPhotoElementRef}
                   />
                 );
               } else {
                 return (
                   <Card
+                    blur_hash={photo.blur_hash}
+                    tags={photo.tags.map(tag => tag.title)}
+                    id={photo.id}
                     url={photo.urls.regular}
                     desc={photo.alt_description}
-                    key={photo.id}
+                    key={uniqueKey}
                   />
                 );
               }
@@ -135,7 +151,9 @@ export const Main = () => {
             <div>No photos to display</div>
           )}
         </div>
-        {loading && page > 1 && <div>Loading more...</div>}
+        {loading && page > 1 && (
+          <h1 className={styles["main__loading"]}>Loading more...</h1>
+        )}
       </div>
     </div>
   );
