@@ -47,18 +47,18 @@ export const Card = forwardRef<HTMLDivElement, ICard>(
               style={{ display: imageLoaded ? "block" : "none" }}
             />
           </div>
-          <div className={styles["card__bottom"]}>
-            <Button className={styles["card__button"]}>
-              <img
-                onClick={handleLike}
-                className={styles["card__like"]}
-                src='/like-right-svgrepo-com.svg'
-                alt='like'
-                width={"36px"}
-              />
-            </Button>
-          </div>
         </Link>
+        <div className={styles["card__bottom"]}>
+          <Button className={styles["card__button"]}>
+            <img
+              onClick={handleLike}
+              className={styles["card__like"]}
+              src='/like-right-svgrepo-com.svg'
+              alt='like'
+              width={"36px"}
+            />
+          </Button>
+        </div>
       </div>
     );
   }

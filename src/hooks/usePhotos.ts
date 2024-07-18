@@ -14,7 +14,6 @@ type Photo = {
 };
 
 export const usePhotos = (query: string, page: number) => {
-  const API_KEY = "oQJHD2gxZ0xVufp-8NeMaz2H7moiCRvYEYy9dGoQ0iw";
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [photos, setPhotos] = useState<Photo[]>([]);
@@ -34,7 +33,9 @@ export const usePhotos = (query: string, page: number) => {
           "https://api.unsplash.com/search/photos",
           {
             headers: {
-              Authorization: `Client-ID ${API_KEY}`,
+              Authorization: `Client-ID ${
+                import.meta.env.VITE_UNSPLASH_API_KEY
+              }`,
             },
             params: {
               query: query,
@@ -61,5 +62,6 @@ export const usePhotos = (query: string, page: number) => {
 
     fetchPhotos();
   }, [query, page]);
+
   return { photos, loading, error, hasMore };
 };

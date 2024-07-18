@@ -17,14 +17,16 @@ export const LikedPhotos = () => {
     }
   });
 
-  console.log(likedPic);
+  likedPic;
 
   return (
     <div className={styles["liked__wrapper"]}>
       <div className={styles["liked__welcome"]}>Welcome {email}!</div>
       <div>you liked photos is...</div>
       {likedPic.length > 0 ? (
-        likedPic.map(({url, id}, index) => <Card key={index} url={url} id={id} />)
+        likedPic.map(({ url, id }, index) => (
+          <Card key={index} url={url} id={id} />
+        ))
       ) : (
         <h1>No liked photos</h1>
       )}

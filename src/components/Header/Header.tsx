@@ -5,6 +5,7 @@ import { useAppDispatch } from "../../hooks/redux-hooks";
 import { useAuth } from "../../hooks/useAuth";
 import { removeUser } from "../../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import { Avatar } from "../Avatar/Avatar";
 
 export const Header = () => {
   const dispatch = useAppDispatch();
@@ -21,8 +22,8 @@ export const Header = () => {
           <Button className={styles["header__liked__auth"]}>liked pics</Button>
         </Link>
         <div className={styles["header__auth"]}>
-          <Link to='/user' className={styles['header__profile']}>
-            <img src='/avatar.jpg' alt='avatar' width={30} height={30} />
+          <Link to='/user' className={styles["header__profile"]}>
+            <Avatar w='50px' h='50px' />
             <Button>My Profile</Button>
           </Link>
           <Button
