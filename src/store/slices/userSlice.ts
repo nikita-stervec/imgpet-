@@ -2,15 +2,17 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UserState {
   email: string | null;
+  username: string | null;
   token: string | null;
   id: string | null;
+  avatar: string | null;
   likedPic: { id: string; url: string }[];
 }
 
 const loadState = () => {
   try {
     const serializedState = sessionStorage.getItem("authState");
-    if (serializedState === null) {
+    if (!serializedState) {
       return undefined;
     }
     return JSON.parse(serializedState);
@@ -19,19 +21,12 @@ const loadState = () => {
   }
 };
 
-const saveState = (state: UserState) => {
-  try {
-    const serializedState = JSON.stringify(state);
-    sessionStorage.setItem("authState", serializedState);
-  } catch (e) {
-    console.error(e);
-  }
-};
-
 const initialState: UserState = loadState() || {
   email: null,
+  username: null,
   token: null,
   id: null,
+  avatar: null,
   likedPic: [],
 };
 
@@ -41,35 +36,40 @@ const userSlice = createSlice({
   reducers: {
     setUser(
       state,
-      action: PayloadAction<{ email: string; token: string; id: string }>
+      action: PayloadAction<{
+        username: string;
+        email: string;
+        token: string;
+        id: string;
+        avatar: string | "/avatar.jpg";
+      }>
     ) {
       state.email = action.payload.email;
+      state.avatar = action.payload.avatar;
+      state.username = action.payload.username;
       state.token = action.payload.token;
       state.id = action.payload.id;
-      saveState(state);
     },
     removeUser(state) {
+      state.avatar = "/avatar.jpg";
       state.email = null;
+      state.username = null;
       state.token = null;
       state.id = null;
       state.likedPic = [];
-      saveState(state);
-    },
-    getUser(state) {
-      state.email;
-      state.token;
-      state.id;
     },
     likePhoto(state, action: PayloadAction<{ url: string; id: string }>) {
       const { id, url } = action.payload;
       if (!state.likedPic.some(photo => photo.id === id && photo.url === url)) {
         state.likedPic.push({ id, url });
-        saveState(state);
       }
+    },
+    uploadAvatar(state, action: PayloadAction<{ avatar: string }>) {
+      state.avatar = action.payload.avatar;
     },
   },
 });
 
-export const { setUser, removeUser, getUser, likePhoto } = userSlice.actions;
+export const { setUser, removeUser, likePhoto, uploadAvatar } = userSlice.actions;
 
 export default userSlice.reducer;
