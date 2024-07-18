@@ -11,6 +11,7 @@ import { Login } from "./pages/Login/Login";
 import { LikedPhotos } from "./pages/LikedPhotos/LikedPhotos";
 import { store } from "./store";
 import "./firebase";
+import { Photo } from "./pages/Photo/Photo";
 import { Provider } from "react-redux";
 
 const router = createBrowserRouter([
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
         element: <Main />,
       },
       {
-        path: "/user",
+        path: "/:user",
         element: <User />,
       },
       {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/photo/:id",
+        element: <Photo />,
       },
       {
         path: "*",

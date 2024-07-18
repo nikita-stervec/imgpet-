@@ -4,28 +4,33 @@
 }
 
 .card__wrapper img {
-  border-top-right-radius: 10%;
-  border-top-left-radius: 10%;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
 }
 
 .card__bottom {
-  background-color: gainsboro;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-color: rgb(147, 147, 147);
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 
 .card__like {
-  background-color: gainsboro;
+  background-color: rgb(147, 147, 147);
   display: flex;
-  margin: 3px 0 3px 12px;
   transition: 0.5s;
   cursor: pointer;
 }
 
 .card__button {
-  background-color: gainsboro;
+  background-color: rgb(147, 147, 147);
   border: none;
 }
 
 .card__like:hover {
+  border-radius: 50%;
   background-color: red;
   transition: 0.1s;
 }

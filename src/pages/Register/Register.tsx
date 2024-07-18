@@ -4,18 +4,38 @@ import styles from "./Register.module.css";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { setUser } from "../../store/slices/userSlice";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useState } from "react";
 
 export const Register = () => {
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleRegister = (email: string, password: string) => {
+  useEffect(() => {
+    const userData = sessionStorage.getItem("authState");
+    if (userData) {
+      dispatch(setUser(JSON.parse(userData)));
+    }
+  }, [dispatch]);
+
+  const handleRegister = (
+    email: string,
+    password: string,
+    username: string
+  ) => {
     const auth = getAuth();
+
+    if (username === "" || username === " ") {
+      setError("username cannot be empty");
+      throw new Error();
+    }
+
     createUserWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
-        console.log(user);
         dispatch(
           setUser({
+            username: username,
             email: user.email,
             id: user.uid,
             token: user.refreshToken,
@@ -23,11 +43,16 @@ export const Register = () => {
         );
         navigate("/");
       })
-      .catch(console.error);
+      .catch(() => setError("user is allready registered"));
   };
+
   return (
     <div className={styles["register__wrapper"]}>
-      <Form handleClick={handleRegister}>Register</Form>
+      {error && <div className={styles["register__error"]}>{error}</div>}
+      <Form handleClick={handleRegister} require={true}>
+        Register
+      </Form>
+
       <span className={styles["register__span"]}>
         Allready have an account?
         <Link to='/login' className={styles["register__link"]}>

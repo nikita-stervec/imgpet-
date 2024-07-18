@@ -2,15 +2,18 @@ import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 
 type Photo = {
+  blur_hash: string;
   urls: {
     regular: string;
   };
   id: string;
   alt_description: string;
+  tags: {
+    title: string;
+  }[];
 };
 
 export const usePhotos = (query: string, page: number) => {
-  const API_KEY = "oQJHD2gxZ0xVufp-8NeMaz2H7moiCRvYEYy9dGoQ0iw";
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [photos, setPhotos] = useState<Photo[]>([]);
@@ -30,7 +33,9 @@ export const usePhotos = (query: string, page: number) => {
           "https://api.unsplash.com/search/photos",
           {
             headers: {
-              Authorization: `Client-ID ${API_KEY}`,
+              Authorization: `Client-ID ${
+                import.meta.env.VITE_UNSPLASH_API_KEY
+              }`,
             },
             params: {
               query: query,
@@ -41,14 +46,11 @@ export const usePhotos = (query: string, page: number) => {
           }
         );
 
-        console.log(response.data);
+        const newPhotos = response.data.results.filter(
+          (photo: Photo) => !photos.some(p => p.id === photo.id)
+        );
 
-        setPhotos(prevPhotos => {
-          const newPhotos = response.data.results.filter(
-            (photo: Photo) => !prevPhotos.some(p => p.id === photo.id)
-          );
-          return [...prevPhotos, ...newPhotos];
-        });
+        setPhotos(prevPhotos => [...prevPhotos, ...newPhotos]);
         setHasMore(response.data.results.length > 0);
         setLoading(false);
       } catch (err) {

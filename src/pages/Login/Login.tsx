@@ -13,7 +13,7 @@ export const Login = () => {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, pass)
       .then(({ user }) => {
-        console.log(user);
+        user;
         dispatch(
           setUser({
             email: user.email,
@@ -23,12 +23,14 @@ export const Login = () => {
         );
         navigate("/");
       })
-      .catch(() => alert("invalid user"));
+      .catch(() => alert("Wrong Email or Password"));
   };
 
   return (
     <div className={styles["login__wrapper"]}>
-      <Form handleClick={handleLogin}>Login</Form>
+      <Form handleClick={handleLogin} label='you may skip it!' require={false}>
+        Login
+      </Form>
       <span className={styles["login__span"]}>
         Don't have an account?
         <Link to='/register' className={styles["login__link"]}>

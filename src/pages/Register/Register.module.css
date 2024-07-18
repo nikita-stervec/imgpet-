@@ -33,3 +33,10 @@
   color: black;
   font-weight: 600;
 }
+
+.register__error {
+  padding: 1rem;
+  border-radius: 15px;
+  background-color: red;
+  color: white;
+}
