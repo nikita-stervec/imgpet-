@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { RootState } from "../../store";
+import { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styles from "./User.module.css";

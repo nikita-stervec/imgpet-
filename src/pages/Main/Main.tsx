@@ -1,30 +1,47 @@
-import { useEffect, useState, useCallback, useRef } from "react";
-import styles from "./Main.module.css";
-import { Card } from "../../components/Card/Card";
-import { usePhotos } from "../../hooks/usePhotos";
-import { useAuth } from "../../hooks/useAuth";
+import { useEffect, useState, useRef, useCallback } from "react";
+import { useAppDispatch } from "../../store/store";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { fetchPhotos } from "../../store/slices/photoSlice";
+import { RootState } from "../../store/store";
+import styles from './Main.module.css'
+import { useAuth } from "../../hooks/useAuth";
+import { Card } from "../../components/Card/Card";
 
 export const Main = () => {
   const [query, setQuery] = useState("porshe 911");
   const [debouncedQuery, setDebouncedQuery] = useState(query);
   const [page, setPage] = useState(1);
-  const { photos, loading, hasMore } = usePhotos(debouncedQuery, page);
-  const observer = useRef<IntersectionObserver | null>(null);
   const seenIds = useRef<Set<string>>(new Set());
-  const username = useSelector((state: RootState) => state.user.username);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const dispatch = useAppDispatch();
+  const observer = useRef<IntersectionObserver | null>(null);
+  const { photos, loading, hasMore } = useSelector((state: RootState) => state.photo);
   const { isAuth } = useAuth();
+  const username = useSelector((state: RootState) => state.user.username);
 
   useEffect(() => {
-    const handler = setTimeout(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
       setDebouncedQuery(query || "block");
       setPage(1);
       seenIds.current.clear();
+      dispatch(fetchPhotos({ query: query || "block", page: 1 }));
     }, 2000);
 
-    return () => clearTimeout(handler);
-  }, [query]);
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [query, dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchPhotos({ query: debouncedQuery, page }));
+  }, [debouncedQuery, page, dispatch]);
+
 
   const lastPhotoElementRef = useCallback(
     (node: HTMLDivElement | null) => {
@@ -65,7 +82,9 @@ export const Main = () => {
                 url={photo.urls.regular}
                 key={`${photo.id}-${index}`}
                 ref={photos.length === index + 1 ? lastPhotoElementRef : null}
-                {...photo}
+                desc={photo.alt_description}
+                id={photo.id}
+                blur_hash={photo.blur_hash}
                 tags={photo.tags.map(tag => tag.title)}
               />
             ))

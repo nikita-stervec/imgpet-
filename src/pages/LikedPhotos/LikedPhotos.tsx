@@ -2,7 +2,7 @@ import styles from "./LikedPhotos.module.css";
 import { Card } from "../../components/Card/Card";
 import { useAuth } from "../../hooks/useAuth";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { RootState } from "../../store/store";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
