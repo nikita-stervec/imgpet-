@@ -70,6 +70,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, removeUser, likePhoto, uploadAvatar } = userSlice.actions;
+export const { setUser, removeUser, likePhoto, uploadAvatar } =
+  userSlice.actions;
 
 export default userSlice.reducer;
