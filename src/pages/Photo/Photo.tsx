@@ -1,9 +1,15 @@
+import { useEffect, useCallback, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Card } from "../../components/Card/Card";
 import styles from "./Photo.module.css";
-import { useEffect, useState, useCallback, useRef } from "react";
-import { useFetchPhoto } from "../../hooks/useFetchPhoto";
-import { usePhotosByTag } from "../../hooks/usePhotosByTag";
+import { useAppDispatch } from "../../store/store";
+import { useSelector } from "react-redux";
+import {
+  fetchPhoto,
+  fetchPhotosByTag,
+  clearRelatedPhotos,
+} from "../../store/slices/photoSlice";
+import { RootState } from "../../store/store";
 
 type Photo = {
   blur_hash: string;
@@ -19,39 +25,51 @@ type Photo = {
 
 export const Photo = () => {
   const { id } = useParams<{ id: string }>();
-  const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(1);
-  const { photo, currentTag, loading: photoLoading } = useFetchPhoto(id);
-  const { relatedPhotos, hasMore, loading: relatedLoading, error: relatedError } = usePhotosByTag(currentTag, page);
+  const dispatch = useAppDispatch();
+  const { photo, relatedPhotos, loading, error, hasMore, currentPage } =
+    useSelector((state: RootState) => state.photo);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchPhoto(id));
+      dispatch(clearRelatedPhotos()); 
+    }
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    if (photo && photo.tags.length > 0) {
+      dispatch(fetchPhotosByTag({ tag: photo.tags[0].title, page: 1 }));
+    }
+  }, [photo, dispatch]);
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastPhotoElementRef = useCallback(
     (node: HTMLDivElement | null) => {
+      if (loading) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver(entries => {
         if (entries[0].isIntersecting && hasMore) {
-          setPage(prevPage => prevPage + 1);
+          if (photo && photo.tags.length > 0) {
+            dispatch(
+              fetchPhotosByTag({
+                tag: photo.tags[0].title,
+                page: currentPage + 1,
+              })
+            );
+          }
         }
       });
       if (node) observer.current.observe(node);
     },
-    [hasMore]
+    [loading, hasMore, photo, currentPage, dispatch]
   );
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
-  }, [id]);
-
-  if (photoLoading) {
+  if (loading && currentPage === 1) {
     return <div>Loading...</div>;
   }
 
-  if (error || relatedError) {
-    return <div>Error: {error || relatedError}</div>;
+  if (error) {
+    return <div>Error: {error}</div>;
   }
 
   if (!photo) {
@@ -90,7 +108,7 @@ export const Photo = () => {
           />
         ))}
 
-        {relatedLoading && <h1>Loading...</h1>}
+        {loading && <h1>Loading...</h1>}
         {error && <div>Error: {error}</div>}
       </div>
     </div>

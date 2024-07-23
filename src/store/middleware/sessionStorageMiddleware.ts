@@ -1,6 +1,7 @@
-import { Store } from 'redux';
+import { Middleware } from 'redux';
+import { AnyAction } from '@reduxjs/toolkit';
 
-const sessionStorageMiddleware = (store: Store) => (next) => (action: { type: string; }) => {
+const sessionStorageMiddleware: Middleware = (store) => (next) => (action: AnyAction) => {
   const result = next(action);
 
   if (action.type.startsWith('user/')) {

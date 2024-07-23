@@ -9,7 +9,7 @@ import { User } from "./pages/User/User";
 import { Register } from "./pages/Register/Register";
 import { Login } from "./pages/Login/Login";
 import { LikedPhotos } from "./pages/LikedPhotos/LikedPhotos";
-import { store } from "./store";
+import { store } from "./store/store";
 import "./firebase";
 import { Photo } from "./pages/Photo/Photo";
 import { Provider } from "react-redux";

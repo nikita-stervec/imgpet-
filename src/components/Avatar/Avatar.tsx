@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { RootState } from "../../store/store";
 
 export const Avatar = ({ h, w }: { h: string; w: string }) => {
   const avatarFromState = useSelector((state: RootState) => state.user.avatar);
