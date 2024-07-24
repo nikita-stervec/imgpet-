@@ -15,8 +15,12 @@ type Photo = {
 
 interface AsyncThunkConfig {}
 
+interface FetchPhotosResponse {
+  results: Photo[];
+}
+
 const fetchPhotos: AsyncThunk<
-  any,
+  FetchPhotosResponse,
   { query: string; page: number },
   AsyncThunkConfig
 > = createAsyncThunk(
@@ -47,7 +51,7 @@ const fetchPhotos: AsyncThunk<
 );
 
 const fetchPhotosByTag: AsyncThunk<
-  any,
+  FetchPhotosResponse,
   { tag: string; page: number },
   AsyncThunkConfig
 > = createAsyncThunk(
@@ -74,24 +78,27 @@ const fetchPhotosByTag: AsyncThunk<
   }
 );
 
-const fetchPhoto: AsyncThunk<any, string, AsyncThunkConfig> = createAsyncThunk(
-  "photo/fetchPhoto",
-  async (id: string, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(
-        `https://api.unsplash.com/photos/${id}`,
-        {
-          headers: {
-            Authorization: `Client-ID ${import.meta.env.VITE_UNSPLASH_API_KEY}`,
-          },
-        }
-      );
-      return response.data;
-    } catch (err) {
-      return rejectWithValue("Error fetching photo");
+const fetchPhoto: AsyncThunk<Photo, string, AsyncThunkConfig> =
+  createAsyncThunk(
+    "photo/fetchPhoto",
+    async (id: string, { rejectWithValue }) => {
+      try {
+        const response = await axios.get(
+          `https://api.unsplash.com/photos/${id}`,
+          {
+            headers: {
+              Authorization: `Client-ID ${
+                import.meta.env.VITE_UNSPLASH_API_KEY
+              }`,
+            },
+          }
+        );
+        return response.data;
+      } catch (err) {
+        return rejectWithValue("Error fetching photo");
+      }
     }
-  }
-);
+  );
 
 interface PhotoState {
   photos: Photo[];
