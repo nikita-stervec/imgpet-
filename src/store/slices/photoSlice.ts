@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk, AsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import {
+  getPhotos,
+  getPhotosByTag,
+  getPhoto,
+} from "../../helpers/axios.helper";
 
 type Photo = {
   blur_hash: string;
@@ -30,19 +34,7 @@ const fetchPhotos: AsyncThunk<
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.get(
-        `https://api.unsplash.com/search/photos`,
-        {
-          params: {
-            query,
-            page,
-            per_page: 10,
-          },
-          headers: {
-            Authorization: `Client-ID ${import.meta.env.VITE_UNSPLASH_API_KEY}`,
-          },
-        }
-      );
+      const response = await getPhotos(query, page);
       return response.data;
     } catch (err) {
       return rejectWithValue("Error fetching photos");
@@ -58,19 +50,7 @@ const fetchPhotosByTag: AsyncThunk<
   "photo/fetchPhotosByTag",
   async ({ tag, page }: { tag: string; page: number }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
-        `https://api.unsplash.com/search/photos`,
-        {
-          params: {
-            query: tag,
-            page,
-            per_page: 10,
-          },
-          headers: {
-            Authorization: `Client-ID ${import.meta.env.VITE_UNSPLASH_API_KEY}`,
-          },
-        }
-      );
+      const response = await getPhotosByTag(tag, page);
       return response.data;
     } catch (err) {
       return rejectWithValue("Error fetching photos by tag");
@@ -83,16 +63,7 @@ const fetchPhoto: AsyncThunk<Photo, string, AsyncThunkConfig> =
     "photo/fetchPhoto",
     async (id: string, { rejectWithValue }) => {
       try {
-        const response = await axios.get(
-          `https://api.unsplash.com/photos/${id}`,
-          {
-            headers: {
-              Authorization: `Client-ID ${
-                import.meta.env.VITE_UNSPLASH_API_KEY
-              }`,
-            },
-          }
-        );
+        const response = await getPhoto(id);
         return response.data;
       } catch (err) {
         return rejectWithValue("Error fetching photo");
