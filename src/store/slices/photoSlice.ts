@@ -19,12 +19,14 @@ type Photo = {
 
 interface AsyncThunkConfig {}
 
-interface FetchPhotosResponse {
+interface SearchPhotosResponse {
   results: Photo[];
+  total: number;
+  total_pages: number;
 }
 
 const fetchPhotos: AsyncThunk<
-  FetchPhotosResponse,
+  SearchPhotosResponse,
   { query: string; page: number },
   AsyncThunkConfig
 > = createAsyncThunk(
@@ -43,7 +45,7 @@ const fetchPhotos: AsyncThunk<
 );
 
 const fetchPhotosByTag: AsyncThunk<
-  FetchPhotosResponse,
+  SearchPhotosResponse,
   { tag: string; page: number },
   AsyncThunkConfig
 > = createAsyncThunk(

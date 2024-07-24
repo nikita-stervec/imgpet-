@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 const fetchPhotosInstance = axios.create({
   baseURL: "https://api.unsplash.com/",
@@ -7,7 +7,28 @@ const fetchPhotosInstance = axios.create({
   },
 });
 
-export const getPhotos = async (query: string, page: number) => {
+type Photo = {
+  blur_hash: string;
+  urls: {
+    regular: string;
+  };
+  id: string;
+  alt_description: string;
+  tags: {
+    title: string;
+  }[];
+};
+
+interface SearchPhotosResponse {
+  results: Photo[];
+  total: number;
+  total_pages: number;
+}
+
+export const getPhotos = async (
+  query: string,
+  page: number
+): Promise<AxiosResponse<SearchPhotosResponse>> => {
   const response = await fetchPhotosInstance.get("search/photos", {
     params: {
       query,
@@ -18,7 +39,10 @@ export const getPhotos = async (query: string, page: number) => {
   return response;
 };
 
-export const getPhotosByTag = async (query: string, page: number) => {
+export const getPhotosByTag = async (
+  query: string,
+  page: number
+): Promise<AxiosResponse<SearchPhotosResponse>> => {
   const response = await fetchPhotosInstance.get("search/photos", {
     params: {
       query: query,
@@ -29,7 +53,7 @@ export const getPhotosByTag = async (query: string, page: number) => {
   return response;
 };
 
-export const getPhoto = async (id: string) => {
+export const getPhoto = async (id: string): Promise<AxiosResponse<Photo>> => {
   const response = await fetchPhotosInstance.get(`photos/${id}`);
   return response;
 };
