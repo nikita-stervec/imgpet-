@@ -3,7 +3,7 @@ import { useAppDispatch } from "../../store/store";
 import { useSelector } from "react-redux";
 import { fetchPhotos } from "../../store/slices/photoSlice";
 import { RootState } from "../../store/store";
-import styles from './Main.module.css'
+import styles from "./Main.module.css";
 import { useAuth } from "../../hooks/useAuth";
 import { Card } from "../../components/Card/Card";
 
@@ -15,7 +15,9 @@ export const Main = () => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const dispatch = useAppDispatch();
   const observer = useRef<IntersectionObserver | null>(null);
-  const { photos, loading, hasMore } = useSelector((state: RootState) => state.photo);
+  const { photos, loading, hasMore } = useSelector(
+    (state: RootState) => state.photo
+  );
   const { isAuth } = useAuth();
   const username = useSelector((state: RootState) => state.user.username);
 
@@ -41,7 +43,6 @@ export const Main = () => {
   useEffect(() => {
     dispatch(fetchPhotos({ query: debouncedQuery, page }));
   }, [debouncedQuery, page, dispatch]);
-
 
   const lastPhotoElementRef = useCallback(
     (node: HTMLDivElement | null) => {
