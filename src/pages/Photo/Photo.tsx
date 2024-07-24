@@ -32,7 +32,7 @@ export const Photo = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchPhoto(id));
-      dispatch(clearRelatedPhotos()); 
+      dispatch(clearRelatedPhotos());
     }
   }, [id, dispatch]);
 

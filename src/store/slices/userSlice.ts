@@ -9,19 +9,7 @@ export interface UserState {
   likedPic: { id: string; url: string }[];
 }
 
-const loadState = () => {
-  try {
-    const serializedState = sessionStorage.getItem("authState");
-    if (!serializedState) {
-      return undefined;
-    }
-    return JSON.parse(serializedState);
-  } catch (err) {
-    return undefined;
-  }
-};
-
-const initialState: UserState = loadState() || {
+const initialState: UserState = {
   email: null,
   username: null,
   token: null,
@@ -70,6 +58,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, removeUser, likePhoto, uploadAvatar } = userSlice.actions;
+export const { setUser, removeUser, likePhoto, uploadAvatar } =
+  userSlice.actions;
 
 export default userSlice.reducer;

@@ -8,12 +8,13 @@ export const store = configureStore({
     user: userReducer,
     photo: photoReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sessionStorageMiddleware),
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().concat(sessionStorageMiddleware),
 });
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
